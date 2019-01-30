@@ -1,0 +1,4 @@
+[redhawk]
+name=REDHAWK Yum Repository
+baseurl=$rhrepo
+gpgcheck=0

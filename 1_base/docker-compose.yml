@@ -1,0 +1,9 @@
+version: '3'
+services:
+  base:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        rhrepo: "http://172.17.0.1/yum/redhawk/"
+    image: redhawk-compose:base
