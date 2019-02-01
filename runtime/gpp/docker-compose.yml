@@ -1,8 +1,0 @@
-version: '3'
-services:
-  gpp:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      args:
-        DOMAIN_NAME: "REDHAWK_DEV" 

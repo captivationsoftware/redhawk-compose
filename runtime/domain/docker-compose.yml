@@ -1,9 +1,0 @@
-version: '3'
-services:
-  domain:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment:
-      - nameserver='localhost'
-      - eventserver='localhost'
