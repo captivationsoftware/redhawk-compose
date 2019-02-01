@@ -77,7 +77,7 @@ services:
   
   ide:
     build:
-      context: ide
+      context: ./ide
       dockerfile: Dockerfile
     image: redhawk-compose:ide
     depends_on: ['domain']
@@ -90,4 +90,7 @@ services:
       - DISPLAY=$DISPLAY
     volumes:
       - "/tmp/.X11-unix:/tmp/.X11-unix"
+    network_mode: "bridge"
+    command:
+      - /usr/bin/rhide
 
