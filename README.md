@@ -28,3 +28,18 @@ Runtime Containers
 The 'runtime' directory breaks out each REDHAWK runtime dependency into their own respective
 microservice.
 
+MacOS Support
+-------------
+The containers have been tested on Docker Engine: 18.09.1. To use the REDHAWK IDE on mac, we
+recommend installing XQuartz to establish an X-display that can be utilized inside our IDE 
+container.
+```bash
+# Step 1: Install Xquartz
+# Step 2: Configure Xquartz (https://blogs.oracle.com/oraclewebcentersuite/running-gui-applications-on-native-docker-containers-for-mac)
+# Step 3: Enable x11 for localhost
+xhost + 127.0.0.1
+# Step 4: Define DISPLAY variable typically used in Linux displays
+export DISPLAY=host.docker.internal:0
+# Step 5: Launching docker compose should automatically start the REDHAWK IDE
+docker-compose up --build
+```
