@@ -3,11 +3,12 @@ Redhawk-Compose
 This project assembles core REDHAWK functions into docker-compose microservices that are
 easily pieced together via a single docker-compose.yml file.
 
+
 Quickstart
 ----------
 The only requirement for redhawk-compose is a yum repository containing a REDHAWK release.
-For convenience, we have provided a container to host your own REDHAWK rpms locally.  To
-start the local yum server, and launch our stock REDHAWK architecture:
+For convenience, we have provided a container to host the REDHAWK rpms locally.  To
+start the local yum server and launch our stock REDHAWK architecture:
 
 ```bash
 # Start yum server with REDHAWK artifacts
@@ -17,13 +18,13 @@ start the local yum server, and launch our stock REDHAWK architecture:
 docker-compose up --build
 ```
 
-Building Dependencies
----------------------
-The 'deps' directory contains dependencies required for building the runtime containers.
-These dependencies contain a local yum server (to host REDHAWK RPMs).
+
+Local Yum Server (Optional)
+---------------------------
+The 'deps' directory contains a yum server container to host REDHAWK artifacts locally.
 
 ### Yum container
-The yum container will download the REDHAWK tarball and unpack RPMs for a yum server.
+The yum container will download a REDHAWK tarball, unpack the RPMs and start an httpd server.
 The yum server is hosted on port 80 (by default) and can be viewed in a browser at 
 [http://localhost/yum](http://localhost/yum).
 
