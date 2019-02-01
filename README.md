@@ -45,7 +45,19 @@ microservice.
 
 ### Base
 The base container extends the stock centos:7 container to reference our local yum container
-above.  All runtime containers extend this base container.
+above.  All runtime containers extend this base container. If you have a different yum
+repository you'd like to use, update the runtime/docker-compose.yml as follows:
+```bash
+version: '3'
+services:
+
+  base:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+      args:
+        rhrepo: "<my-external-yum-URL-here>"
+```
 
 ### Omniserver
 The omniserver container extends the base container to include omniORB services required by
