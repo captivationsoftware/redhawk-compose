@@ -1,9 +1,0 @@
-version: '3'
-services:
-  redhawk-yum:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    network_mode: bridge
-    ports:
-      - "80:80"

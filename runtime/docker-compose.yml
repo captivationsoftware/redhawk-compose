@@ -1,0 +1,73 @@
+version: '3'
+services:
+
+  base:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+      args:
+        rhrepo: "http://172.17.0.1/yum/redhawk/"
+
+  omniNames:
+    build:
+      context: ./omniorb
+      dockerfile: Dockerfile
+    depends_on: ['base']
+    image: redhawk-compose:omniserver 
+    restart: always
+    environment:
+      - nameserver=localhost
+      - eventserver=localhost
+    network_mode: "bridge"
+    ports:
+      - 2809:2809
+    command:
+      - /usr/local/bin/omniNames.sh
+  
+  omniEvents:
+    image: redhawk-compose:omniserver
+    restart: always
+    links:
+      - omniNames
+    environment:
+      - nameserver=omniNames
+      - eventserver=localhost
+    network_mode: "bridge"
+    ports:
+      - 11169:11169
+    command:
+      - /usr/local/bin/omniEvents.sh
+
+  domain:
+    build:
+      context: ./domain
+      dockerfile: Dockerfile
+    depends_on: ['base']
+    image: redhawk-compose:domain
+    restart: always
+    links:
+      - omniNames
+      - omniEvents
+    environment:
+      - nameserver=omniNames
+      - eventserver=omniEvents
+    network_mode: "bridge"
+    command:
+      - /usr/local/bin/startDomain.sh
+  
+  gpp:
+    build:
+      context: ./gpp
+      dockerfile: Dockerfile
+    depends_on: ['domain']
+    image: redhawk-compose:gpp
+    restart: always
+    links:
+      - omniNames
+      - omniEvents
+    environment:
+      - nameserver=omniNames
+      - eventserver=omniEvents
+    network_mode: "bridge"
+    command:
+      - /usr/local/bin/startGPP.sh

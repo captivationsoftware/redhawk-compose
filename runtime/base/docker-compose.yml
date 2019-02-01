@@ -1,8 +1,6 @@
 version: '3'
 services:
-  domain:
+  base:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        rhrepo: "http://172.17.0.1/yum/redhawk/" 

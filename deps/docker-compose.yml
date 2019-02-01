@@ -1,0 +1,11 @@
+version: '3'
+services:
+  redhawk-yum:
+    build:
+      context: ./yum
+      dockerfile: Dockerfile
+      args:
+        - REDHAWK_TAR=https://github.com/RedhawkSDR/redhawk/releases/download/2.2.1/redhawk-yum-2.2.1-el7-x86_64.tar.gz
+    network_mode: bridge
+    ports:
+      - "80:80"  

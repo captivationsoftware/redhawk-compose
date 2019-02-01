@@ -1,8 +1,8 @@
 version: '3'
 services:
-  domain:
+  gpp:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        rhrepo: "http://172.17.0.1/yum/redhawk/" 
+        DOMAIN_NAME: "REDHAWK_DEV" 
