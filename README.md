@@ -29,6 +29,7 @@ The yum server is hosted on port 80 (by default) and can be viewed in a browser 
 [http://localhost/yum](http://localhost/yum).
 
 #### To build and start yum-server, launch the docker-compose.yml located inside 'deps'
+
 ```bash
 cd deps && docker-compose up --build
 ```
@@ -37,6 +38,17 @@ cd deps && docker-compose up --build
 To build containers with a different REDHAWK version, update the 'REDHAWK_TAR' variable 
 located inside (./deps/docker-compose.yml). The REDHAWK tarballs can be found on github at 
 <https://github.com/RedhawkSDR/redhawk/releases>.
+
+```bash
+version: '3'
+services:
+  redhawk-yum:
+    build:
+      context: ./yum
+      dockerfile: Dockerfile
+      args:
+        - REDHAWK_TAR=<path-to-REDHAWK-tarball-here>
+```
 
 
 Runtime Containers
