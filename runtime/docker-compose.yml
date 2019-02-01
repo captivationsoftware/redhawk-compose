@@ -51,6 +51,7 @@ services:
     environment:
       - nameserver=omniNames
       - eventserver=omniEvents
+      - domainname=REDHAWK_COMPOSE
     network_mode: "bridge"
     command:
       - /usr/local/bin/startDomain.sh
@@ -68,6 +69,7 @@ services:
     environment:
       - nameserver=omniNames
       - eventserver=omniEvents
+      - domainname=REDHAWK_COMPOSE
     network_mode: "bridge"
     command:
       - /usr/local/bin/startGPP.sh

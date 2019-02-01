@@ -12,7 +12,8 @@ ENV SDRROOT=/var/redhawk/sdr \
 
 # Define omniserver hostnames (To establish omniORB connections) 
 ENV nameserver=omniNames \
-    eventserver=omniEvents
+    eventserver=omniEvents \
+    domainname=REDHAWK_DEV
 
 ADD conf/startDomain.sh /usr/local/bin/startDomain.sh
 
