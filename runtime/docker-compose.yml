@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile
       args:
         rhrepo: "http://172.17.0.1/yum/redhawk/"
+    image: redhawk-compose:base
 
   omniNames:
     build:
@@ -78,7 +79,11 @@ services:
     build:
       context: ide
       dockerfile: Dockerfile
+    image: redhawk-compose:ide
     depends_on: ['domain']
+    links:
+      - omniNames
+      - omniEvents
     environment:
       - nameserver=omniNames
       - eventserver=omniEvents
