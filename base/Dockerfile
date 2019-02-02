@@ -1,6 +1,6 @@
 FROM centos:7
 
-ARG rhrepo=http://localhost/yum/redhawk/
+ARG rhrepo=file:///data/yum/redhawk/
 
 ADD conf/redhawk.repo /etc/yum.repos.d/redhawk.repo
 RUN echo "$rhrepo" >> /etc/yum/vars/rhrepo && \

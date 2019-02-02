@@ -1,8 +1,12 @@
+FROM redhawk-compose:repo as repo
+
 FROM redhawk-compose:base
 
+COPY --from=repo /data/yum/redhawk /data/yum/redhawk
 RUN yum install -y omniORB-servers \
                    omniORB-utils \
                    omniEvents-server
+RUN rm -rf /data/yum/redhawk
 
 ADD conf/omniNames.sh /usr/local/bin/omniNames.sh
 ADD conf/omniEvents.sh /usr/local/bin/omniEvents.sh

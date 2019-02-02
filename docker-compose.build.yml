@@ -19,22 +19,34 @@ services:
     build:
       context: ./omniorb
       dockerfile: Dockerfile
+    depends_on:
+      - base
+      - repo
     image: redhawk-compose:omniserver
 
   domain:
     build:
       context: ./domain
       dockerfile: Dockerfile
+    depends_on:
+      - omniserver
+      - repo
     image: redhawk-compose:domain
 
   gpp:
     build:
       context: ./gpp
       dockerfile: Dockerfile
+    depends_on:
+      - domain
+      - repo
     image: redhawk-compose:gpp
 
   ide:
     build:
       context: ./ide
       dockerfile: Dockerfile
+    depends_on:
+      - domain
+      - repo
     image: redhawk-compose:ide

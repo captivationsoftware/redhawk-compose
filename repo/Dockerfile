@@ -3,7 +3,6 @@ FROM centos:7
 ARG REDHAWK_TAR
 
 ADD $REDHAWK_TAR /data/yum/redhawk-yum.tar.gz
-#COPY ./redhawk-yum-2.2.1-el7-x86_64.tar.gz /data/yum/redhawk-yum.tar.gz
 
 RUN yum install -y httpd && \
     cd /data/yum && \
