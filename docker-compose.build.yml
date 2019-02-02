@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+  base:
+    build:
+      context: ./base
+      dockerfile: Dockerfile
+    image: redhawk-compose:base
+
+  repo:
+    build:
+      context: ./repo
+      dockerfile: Dockerfile
+      args:
+        - REDHAWK_TAR=https://github.com/RedhawkSDR/redhawk/releases/download/2.2.1/redhawk-yum-2.2.1-el7-x86_64.tar.gz
+    image: redhawk-compose:repo
+
+  omniserver:
+    build:
+      context: ./omniorb
+      dockerfile: Dockerfile
+    image: redhawk-compose:omniserver
+
+  domain:
+    build:
+      context: ./domain
+      dockerfile: Dockerfile
+    image: redhawk-compose:domain
+
+  gpp:
+    build:
+      context: ./gpp
+      dockerfile: Dockerfile
+    image: redhawk-compose:gpp
+
+  ide:
+    build:
+      context: ./ide
+      dockerfile: Dockerfile
+    image: redhawk-compose:ide
