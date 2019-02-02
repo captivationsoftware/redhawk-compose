@@ -1,14 +1,9 @@
-FROM redhawk-compose:repo as repo
 FROM redhawk-compose:omniserver
-
-COPY --from=repo /data/yum/redhawk /data/yum/redhawk
 
 RUN yum install -y redhawk \
                    redhawk-sdrroot-dom* \
                    bulkioInterfaces \
                    frontendInterfaces
-
-RUN rm -rf /data/yum/redhawk
 
 # Define redhawk-required environment variables
 ENV SDRROOT=/var/redhawk/sdr \

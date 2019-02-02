@@ -7,69 +7,28 @@ easily pieced together via a single docker-compose.yml file.
 Quickstart
 ----------
 The only requirement for redhawk-compose is a yum repository containing a REDHAWK release.
-For convenience, we have provided a container to host the REDHAWK rpms locally.  To
-start the local yum server and launch our stock REDHAWK architecture:
+Don't have your own REDHAWK yum repository?  No problem - we've provided another project to
+create your own yum repository to host the REDHAWK rpms locally at 
+[redhawk-yum](https://github.com/captivationsoftware/redhawk-yum).
 
 ```bash
-# Start yum server with REDHAWK artifacts
-(cd deps && docker-compose up --build)
+# Build REDHAWK runtime containers
+docker-compose -f docker-compose.build.yml build
 
-# Start REDHAWK runtime containers
-docker-compose up --build
+# Launch REDHAWK runtime containers
+docker-compose up
 ```
-
-
-Local Yum Server (Optional)
----------------------------
-The 'deps' directory contains a yum server container to host REDHAWK artifacts locally.
-
-### Yum container
-The yum container will download a REDHAWK tarball, unpack the RPMs and start an httpd server.
-The yum server is hosted on port 80 (by default) and can be viewed in a browser at 
-[http://localhost/yum](http://localhost/yum).
-
-#### To build and start yum-server, launch the docker-compose.yml located inside 'deps'
-
-```bash
-cd deps && docker-compose up --build
-```
-
-#### Updating REDHAWK version
-To build containers with a different REDHAWK version, update the 'REDHAWK_TAR' variable 
-located inside (./deps/docker-compose.yml). The REDHAWK tarballs can be found on github at 
-<https://github.com/RedhawkSDR/redhawk/releases>.
-
-```bash
-version: '3'
-services:
-  redhawk-yum:
-    build:
-      context: ./yum
-      dockerfile: Dockerfile
-      args:
-        - REDHAWK_TAR=<path-to-REDHAWK-tarball-here>
-```
-
 
 Runtime Containers
 ------------------
-The 'runtime' directory breaks out each REDHAWK runtime dependency into their own respective
-microservice.
+Each sub-directory represents a REDHAWK microservice that runs in their own respective containers.
 
 ### Base
 The base container extends the stock centos:7 container to reference our local yum container
 above.  All runtime containers extend this base container. If you have a different yum
-repository you'd like to use, update the runtime/docker-compose.yml as follows:
+repository you'd like to use, update the [.env](.env) file as follows:
 ```bash
-version: '3'
-services:
-
-  base:
-    build:
-      context: ./base
-      dockerfile: Dockerfile
-      args:
-        rhrepo: "<my-external-yum-URL-here>"
+rhrepo="<my-external-yum-URL-here>"
 ```
 
 ### Omniserver

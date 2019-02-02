@@ -1,10 +1,5 @@
 version: '3'
 services:
-  repo:
-    image: redhawk-compose:repo
-    network_mode: bridge
-    ports:
-      - "80:80"
 
   omniNames:
     image: redhawk-compose:omniserver
@@ -12,7 +7,8 @@ services:
     environment:
       - nameserver=localhost
       - eventserver=localhost
-    network_mode: "bridge"
+    networks:
+      - rhnet
     ports:
       - 2809:2809
     command:
@@ -26,7 +22,8 @@ services:
     environment:
       - nameserver=omniNames
       - eventserver=localhost
-    network_mode: "bridge"
+    networks:
+      - rhnet
     ports:
       - 11169:11169
     command:
@@ -41,8 +38,9 @@ services:
     environment:
       - nameserver=omniNames
       - eventserver=omniEvents
-      - domainname=REDHAWK_COMPOSE
-    network_mode: "bridge"
+      - domainname=${domainname:-REDHAWK_COMPOSE}
+    networks:
+      - rhnet
     command:
       - /usr/local/bin/startDomain.sh
 
@@ -56,8 +54,9 @@ services:
     environment:
       - nameserver=omniNames
       - eventserver=omniEvents
-      - domainname=REDHAWK_COMPOSE
-    network_mode: "bridge"
+      - domainname=${domainname:-REDHAWK_COMPOSE}
+    networks:
+      - rhnet
     command:
       - /usr/local/bin/startGPP.sh
 
@@ -73,6 +72,10 @@ services:
       - DISPLAY=$DISPLAY
     volumes:
       - "/tmp/.X11-unix:/tmp/.X11-unix"
-    network_mode: "bridge"
+    networks:
+      - rhnet
     command:
       - /usr/bin/rhide
+
+networks:
+  rhnet:

@@ -1,19 +1,13 @@
 version: '3'
 services:
-
+  
   base:
     build:
       context: ./base
       dockerfile: Dockerfile
-    image: redhawk-compose:base
-
-  repo:
-    build:
-      context: ./repo
-      dockerfile: Dockerfile
       args:
-        - REDHAWK_TAR=https://github.com/RedhawkSDR/redhawk/releases/download/2.2.1/redhawk-yum-2.2.1-el7-x86_64.tar.gz
-    image: redhawk-compose:repo
+        rhrepo: ${rhrepo:-"http://$$host:8080/yum/redhawk/"}
+    image: redhawk-compose:base
 
   omniserver:
     build:
@@ -21,7 +15,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - base
-      - repo
     image: redhawk-compose:omniserver
 
   domain:
@@ -30,7 +23,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - omniserver
-      - repo
     image: redhawk-compose:domain
 
   gpp:
@@ -39,7 +31,6 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - domain
-      - repo
     image: redhawk-compose:gpp
 
   ide:
@@ -48,5 +39,4 @@ services:
       dockerfile: Dockerfile
     depends_on:
       - domain
-      - repo
     image: redhawk-compose:ide
