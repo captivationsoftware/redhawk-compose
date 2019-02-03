@@ -1,25 +1,13 @@
 #!/bin/bash
 
-#if ! grep -q "EventService" /etc/omniORB.cfg; then
-#  # Lookup IP of omniORB server
-#  nameserverIP=$(getent hosts $nameserver | awk '{ print $1 }') || $NAMESERVER_IP
-#  eventserverIP=$(getent hosts $eventserver | awk '{ print $1 }') || $EVENTSERVER_IP
-#
-#  if [ ! -z "$nameserverIP" ]; then
-#    # Reference omniORB server location
-#    echo "Configuring nameserver with IP $nameserverIP"
-#    sed -i "s/127.0.0.1/$nameserverIP/g" /etc/omniORB.cfg
-#  fi
-#
-#  if [ ! -z "$eventserverIP" ]; then
-#    # Add omniEvents configuration
-#    echo "Configuring eventserver with IP $eventserverIP"
-#    echo "InitRef = EventService=corbaloc::$eventserverIP:11169/omniEvents" >> /etc/omniORB.cfg
-#  fi
-#fi
-
 # Determine domain name (default is REDHAWK_DEV)
 domainname=${domainname:-REDHAWK_DEV}
 
-exec /usr/local/redhawk/core/bin/nodeBooter -d /var/redhawk/sdr/dev/nodes/GppNode/DeviceManager.dcd.xml \
+# Generate a unique GPP nodee
+defaultnode="Gpp_$(hostname)"
+nodename=${nodename:-$defaultnode}
+/var/redhawk/sdr/dev/devices/GPP/cpp/gpp_setup --nodename=$nodename
+
+# Launch GPP node
+exec /usr/local/redhawk/core/bin/nodeBooter -d /var/redhawk/sdr/dev/nodes/$nodename/DeviceManager.dcd.xml \
                                             --domainname $domainname
