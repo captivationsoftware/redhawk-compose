@@ -1,4 +1,4 @@
-ARG rhver=2.2.4
+ARG rhver=latest
 FROM redhawk-compose/devel:$rhver as devel
 
 RUN yum install -y libusbx-devel \
