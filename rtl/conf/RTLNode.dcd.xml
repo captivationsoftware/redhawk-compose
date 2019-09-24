@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE deviceconfiguration PUBLIC "-//JTRS//DTD SCA V2.2.2 DCD//EN" "deviceconfiguration.dtd">
+<deviceconfiguration id="DCE:%uuid%" name="RTL_Node_%uuid%">
+  <devicemanagersoftpkg>
+    <localfile name="/mgr/DeviceManager.spd.xml"/>
+  </devicemanagersoftpkg>
+  <componentfiles>
+    <componentfile id="RTL_%uuid%" type="SPD">
+        <localfile name="/devices/rh/RTL2832U/RTL2832U.spd.xml"/>
+    </componentfile>
+  </componentfiles>
+  <partitioning>
+    <componentplacement>
+      <componentfileref refid="RTL_%uuid%"/>
+      <componentinstantiation id="RTL_1">
+        <usagename>RTL_1</usagename>
+        <componentproperties>
+          <simpleref refid="group_id" value="%group_id%"/>
+          <simpleref refid="digital_agc_enable" value="%digital_agc_enable%"/>
+          <simpleref refid="frequency_correction" value="%frequency_correction%"/>
+          <simpleref refid="bias_enable" value="%bias_enable%"/>
+        </componentproperties>
+      </componentinstantiation>
+    </componentplacement>
+  </partitioning>
+  <domainmanager>
+    <namingservice name="%domainname%/%domainname%"/>
+  </domainmanager>
+</deviceconfiguration>

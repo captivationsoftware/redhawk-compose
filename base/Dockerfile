@@ -10,6 +10,7 @@ ARG rhrepo
 COPY --from=helper /etc/yum/vars/host /etc/yum/vars/host
 ADD conf/redhawk.repo /etc/yum.repos.d/redhawk.repo
 RUN echo "$rhrepo" >> /etc/yum/vars/rhrepo && \
-    yum clean all
+    yum clean all && \
+    yum update -y
 
 CMD ["/bin/bash"]

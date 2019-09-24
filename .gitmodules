@@ -1,0 +1,4 @@
+[submodule "rtl/RTL2832U"]
+	path = rtl/RTL2832U
+	url = https://github.com/captivationsoftware/RTL2832U.git
+	branch = feature/bias-tee

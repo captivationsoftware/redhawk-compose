@@ -2,7 +2,7 @@ version: '3'
 services:
 
   omniNames:
-    image: redhawk-compose:omniserver
+    image: redhawk-compose/omniserver:${rhver:-latest}
     restart: always
     environment:
       - nameserver=localhost
@@ -10,12 +10,12 @@ services:
     networks:
       - rhnet
     ports:
-      - 2809:2809
+      - ${nameserver_port:-2809}:2809
     command:
       - /usr/local/bin/omniNames.sh
 
   omniEvents:
-    image: redhawk-compose:omniserver
+    image: redhawk-compose/omniserver:${rhver:-latest}
     restart: always
     links:
       - omniNames
@@ -25,12 +25,12 @@ services:
     networks:
       - rhnet
     ports:
-      - 11169:11169
+      - ${eventserver_port:-11169}:11169
     command:
       - /usr/local/bin/omniEvents.sh
 
   domain:
-    image: redhawk-compose:domain
+    image: redhawk-compose/domain:${rhver:-latest}
     restart: always
     links:
       - omniNames
@@ -45,7 +45,7 @@ services:
       - /usr/local/bin/startDomain.sh
 
   gpp:
-    image: redhawk-compose:gpp
+    image: redhawk-compose/gpp:${rhver:-latest}
     depends_on: ['domain']
     restart: always
     links:
@@ -59,9 +59,32 @@ services:
       - rhnet
     command:
       - /usr/local/bin/startGPP.sh
+  
+  rtl:
+    image: redhawk-compose/rtl:${rhver:-latest}
+    depends_on: ['domain']
+    restart: always
+    links:
+      - omniNames
+      - omniEvents
+    environment:
+      - nameserver=omniNames
+      - eventserver=omniEvents
+      - domainname=${domainname:-REDHAWK_COMPOSE}
+      - group_id=MyRTL
+      - bias_enable=${rtl_bias_enable:-0}
+      - digital_agc_enable=${rtl_digital_agc_enable:-0}
+      - debug=3
+    volumes:
+      - /dev/usb:/dev/usb
+    privileged: true
+    networks:
+      - rhnet
+    command:
+      - /usr/local/bin/startRTL.sh
 
   ide:
-    image: redhawk-compose:ide
+    image: redhawk-compose/ide:${rhver:-latest}
     depends_on: ['domain']
     links:
       - omniNames

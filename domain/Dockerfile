@@ -1,5 +1,6 @@
-FROM redhawk-compose:omniserver
-
+################# Create Environment ################
+ARG rhver=latest
+FROM redhawk-compose/omniserver/env:$rhver as env
 RUN yum install -y redhawk \
                    redhawk-sdrroot-dom* \
                    bulkioInterfaces \
@@ -15,6 +16,7 @@ ENV nameserver=omniNames \
     eventserver=omniEvents \
     domainname=REDHAWK_DEV
 
+################### Create Runtime ##################
+FROM env as runtime
 ADD conf/startDomain.sh /usr/local/bin/startDomain.sh
-
 CMD ["/usr/local/bin/startDomain.sh"]

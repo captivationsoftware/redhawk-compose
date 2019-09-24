@@ -19,6 +19,15 @@ docker-compose -f docker-compose.build.yml build
 docker-compose up
 ```
 
+Environment Containers
+----------------------
+Some of these microservice containers extend previously build containers (i.e. domain extends omniorb)
+and the development workflow can be inefficient while tweaking configurations.  To rememdy this
+inefficiency, each container has the concept of an 'environment' and a 'runtime' where the 'environment'
+only contains yum/rpm installation, and the 'runtime' applies configuration on top of the 'environment.'
+This allows for containers further down the pipeline to extend the 'environment' variants of the container
+and not be affected by runtime configuration changes of the parent service.
+
 Runtime Containers
 ------------------
 Each sub-directory represents a REDHAWK microservice that runs in their own respective containers.
@@ -62,5 +71,5 @@ xhost + 127.0.0.1
 export DISPLAY=host.docker.internal:0
 
 # Step 5: Launching docker compose should automatically start the REDHAWK IDE
-docker-compose up --build
+docker-compose up
 ```

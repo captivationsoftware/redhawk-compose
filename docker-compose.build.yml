@@ -1,42 +1,120 @@
-version: '3'
+version: '3.5'
 services:
   
-  base:
+  base_env:
     build:
       context: ./base
       dockerfile: Dockerfile
       args:
+        rhver: ${rhver:-latest}
         rhrepo: ${rhrepo:-"http://$$host:8080/yum/redhawk/"}
-    image: redhawk-compose:base
+    image: redhawk-compose/base/env:${rhver:-latest}
+  
+  omniserver_env:
+    build:
+      context: ./omniorb
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: env
+    depends_on:
+      - base_env
+    image: redhawk-compose/omniserver/env:${rhver:-latest}
 
   omniserver:
     build:
       context: ./omniorb
       dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: runtime
     depends_on:
-      - base
-    image: redhawk-compose:omniserver
+      - omniserver_env
+    image: redhawk-compose/omniserver:${rhver:-latest}
+  
+  domain_env:
+    build:
+      context: ./domain
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: env
+    depends_on:
+      - omniserver_env
+    image: redhawk-compose/domain/env:${rhver:-latest}
 
   domain:
     build:
       context: ./domain
       dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: runtime
     depends_on:
-      - omniserver
-    image: redhawk-compose:domain
+      - domain_env
+    image: redhawk-compose/domain:${rhver:-latest}
+  
+  gpp_env:
+    build:
+      context: ./gpp
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: env
+    depends_on:
+      - domain_env
+    image: redhawk-compose/gpp/env:${rhver:-latest}
 
   gpp:
     build:
       context: ./gpp
       dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: runtime
     depends_on:
-      - domain
-    image: redhawk-compose:gpp
+      - gpp_env
+    image: redhawk-compose/gpp:${rhver:-latest}
+  
+  devel:
+    build:
+      context: ./devel
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+    depends_on:
+      - domain_env
+    image: redhawk-compose/devel:${rhver:-latest}
+  
+  rtl_env:
+    build:
+      context: ./rtl
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: devel
+    depends_on:
+      - domain_env
+    image: redhawk-compose/rtl/env:${rhver:-latest}
+  
+  rtl:
+    build:
+      context: ./rtl
+      dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
+      target: runtime
+    depends_on:
+      - devel
+      - rtl_env
+    image: redhawk-compose/rtl:${rhver:-latest}
 
   ide:
     build:
       context: ./ide
       dockerfile: Dockerfile
+      args:
+        rhver: ${rhver:-latest}
     depends_on:
       - domain
-    image: redhawk-compose:ide
+    image: redhawk-compose/ide:${rhver:-latest}
